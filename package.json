@@ -28,7 +28,7 @@
     "@nestjs/platform-express": "11.0.9",
     "@nestjs/platform-fastify": "11.0.9",
     "@nestjs/swagger": "11.0.3",
-    "@Pandi2352/nestjs-backend-template-sdk": "^0.0.1",
+    "@Pandi2352/nestjs-backend-template-sdk": "^0.0.2",
     "axios": "1.7.9",
     "csvtojson": "2.0.10",
     "helmet": "8.0.0",
