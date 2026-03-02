@@ -1,18 +1,18 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { LoggerHelper, RequestContext } from '@skm-universe/code-utils';
-import { TenantService } from '@Pandi2352/nestjs-backend-template-sdk/dist/src/modules/tenants-srv/services/classes/TenantsService';
-
+import { LoggerHelper } from '../entities/LoggerHelper';
+import { RequestContext } from '../entities/RequestContext';
 
 @Injectable({ scope: Scope.REQUEST })
 export class RequestContextPreparationService {
   private context: RequestContext = {} as RequestContext;
-  // private logger = new Logger('CONTEXT');
+
   async prepareContext(req: any, res: any): Promise<RequestContext> {
     try {
-      this.logIncommingRequest(req);
+      this.logIncomingRequest(req);
       this.context = new RequestContext(req, res);
-      const tenant_config = await this.resolveTenentInfo(this.context.base_url);
-      this.context.setTenantConfig(tenant_config);
+      // If you enable multi-tenancy, resolve tenant info here:
+      // const tenant_config = await this.resolveTenantInfo(this.context.base_url);
+      // this.context.setTenantConfig(tenant_config);
       return Promise.resolve(this.context);
     } catch (error) {
       LoggerHelper.Instance.error("", "RequestContextPreparationService ", error);
@@ -20,23 +20,16 @@ export class RequestContextPreparationService {
     }
   }
 
-  private async resolveTenentInfo(base_url: string): Promise<any> {
-    // return {}; // replace this with your tenant resolver call
-    return await TenantService.Instance.getTenantInfoByBaseURL(base_url);
-  }
-
-  private async logIncommingRequest(req: any) {
+  private async logIncomingRequest(req: any) {
     try {
-      // Do your logging here
       LoggerHelper.Instance.info("", "Incoming Request ", { headers: JSON.stringify(req.headers) });
     } catch (error) {
-
+      // Silently ignore logging errors
     }
   }
 
   updateUserContext(user: any) {
     this.context.setUserContext(user);
-    // this.logger.debug("current context user updated", this.context);
   }
 
   getCurrentContext() {

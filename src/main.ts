@@ -5,7 +5,6 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { VersioningType } from '@nestjs/common';
 const fmp = require('@fastify/multipart');
 import helmet from 'helmet';
-import { KafkaProducer, LoggerHelper } from '@skm-universe/code-utils';
 
 async function bootstrap() {
   try {
@@ -46,12 +45,6 @@ async function bootstrap() {
       .setVersion('1.0.0')
       .addBearerAuth()
       .build();
-
-      // try {
-      //   KafkaProducer.Instance.connect().then(d => { }).catch(e => console.log(e));
-      // } catch (error) {
-      //   LoggerHelper.Instance.error("", "Error while starting the kafka producer", error);
-      // }
 
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api', app, document);
